@@ -13,7 +13,7 @@ import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Vehiculo;
 
 import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.IFuenteDatos;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.IVehiculos;
-import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.Vehiculos;
+import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.memoria.Vehiculos;
 
 
 public class ModeloCascada extends Modelo{
@@ -21,9 +21,9 @@ public class ModeloCascada extends Modelo{
 	
 	public ModeloCascada(IFuenteDatos fuenteDatos) {
 		
-		clientes = fuenteDatos.crearClientes();
-		vehiculos = fuenteDatos.crearVehiculos();
-		alquileres = fuenteDatos.crearAlquileres();
+		super();
+		setFuenteDatos(fuenteDatos);
+		comenzar();
 	}
 	
 

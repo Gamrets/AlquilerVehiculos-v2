@@ -31,11 +31,6 @@ public class Turismo extends Vehiculo {
 		this.cilindrada = cilindrada;
 	}
 	
-	@Override
-	public Vehiculo getVehiculoConMatricula(String matricula){
-		if (matricula==null) if (matricula == null) {throw new NullPointerException("ERROR: La matrícula no puede ser nula.");}
-		return new Turismo("Mercedes","Bens",50,matricula);
-	}
 	
 
 	@Override
@@ -45,23 +40,6 @@ public class Turismo extends Vehiculo {
 
 		return (int) factorPrecio;
 	}
-
-	/*@Override
-	public int hashCode() {
-		return Objects.hash(super.getMatricula());
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj instanceof Turismo) {
-			Turismo other = (Turismo) obj;
-			return Objects.equals(super.getMatricula(), other.getMatricula());
-		}
-		return false;
-	}*/
 
 	@Override
 	public String toString() {

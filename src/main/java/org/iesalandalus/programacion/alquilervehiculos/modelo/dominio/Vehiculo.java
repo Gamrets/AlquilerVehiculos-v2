@@ -55,7 +55,11 @@ public abstract class Vehiculo {
 	}
 	
 
-	public abstract Vehiculo getVehiculoConMatricula(String matriculaValida);
+	public static Vehiculo getVehiculoConMatricula(String matriculaValida) {
+		
+		if (matriculaValida==null) if (matriculaValida == null) {throw new NullPointerException("ERROR: La matrícula no puede ser nula.");}
+		return new Turismo("Mercedes","Bens",50,matriculaValida);
+	}
 
 
 	public String getMarca() {
