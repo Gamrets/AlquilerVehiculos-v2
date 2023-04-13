@@ -203,10 +203,7 @@ public class Consola {
 	public static Vehiculo leerVehiculoMatricula() {
 		
 		String matricula = leerCadena("Introduce matricula(1111AAA): ");
-		
-		
-		
-		
+
 		Vehiculo vehiculo =  new Furgoneta("Mercedes", "Benz", 5, 10, matricula);
 		
 	 

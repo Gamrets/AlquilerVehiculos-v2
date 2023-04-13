@@ -127,18 +127,21 @@ public class VistaTexto  extends Vista{
 		}
 	}
 
-	protected void devolverAlquiler() {
-		Consola.mostrarCabecera("Devolver alquiler");
-		Alquiler alquiler = Consola.leerAlquiler();
+	protected void devolverAlquilerCliente() {
+		Consola.mostrarCabecera("Accion devolver alquiler por cliente");
+		Cliente cliente = Consola.leerClienteDni();
 		LocalDate fechaDevolucion = Consola.leerFechaDevolucion();
-		try {
-			controlador.devolver(alquiler, fechaDevolucion);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+		try{controlador.devolver(cliente, fechaDevolucion);}catch(Exception e) {System.out.println(e.getMessage());}
 
 	}
+	protected void devolverAlquilerVehiculo() {
+		Consola.mostrarCabecera("Accion devolver alquiler por cliente");
+		Vehiculo vehiculo  = Consola.leerVehiculoMatricula();
+		LocalDate fechaDevolucion = Consola.leerFechaDevolucion();
+		try{controlador.devolver(vehiculo,fechaDevolucion);}catch(Exception e) {System.out.println(e.getMessage());}
 
+	}
+	
 	protected void borrarCliente() {
 		Consola.mostrarCabecera("Borrar cliente");
 		Cliente cliente = Consola.leerClienteDni();
@@ -301,4 +304,7 @@ public class VistaTexto  extends Vista{
 		}
 	}
 
+	
+	
+	
 }

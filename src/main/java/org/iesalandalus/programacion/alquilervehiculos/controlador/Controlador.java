@@ -64,14 +64,29 @@ public class Controlador {
 		modelo.modificar(cliente, nombre, telefono);
 	}
 
-	public void devolver(Alquiler alquiler, LocalDate fechaDevolucion) {
+
+	public void devolver(Cliente cliente, LocalDate fechaDevolucion) {
 		try {
-			modelo.devolver(alquiler, fechaDevolucion);
-		} catch (NullPointerException  | OperationNotSupportedException e) {
+			modelo.devolver(cliente, fechaDevolucion);
+		} catch (NullPointerException e) {		
 			System.out.println(e.getMessage());
-		} 
+		} catch (OperationNotSupportedException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
+	public void devolver(Vehiculo vehiculo, LocalDate fechaDevolucion) {
+		try {
+			modelo.devolver(vehiculo, fechaDevolucion);
+		} catch (NullPointerException e) {
+			System.out.println(e.getMessage());
+		} catch (OperationNotSupportedException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	
+	
 	public void borrar(Cliente cliente) throws OperationNotSupportedException {
 		modelo.borrar(cliente);
 	}

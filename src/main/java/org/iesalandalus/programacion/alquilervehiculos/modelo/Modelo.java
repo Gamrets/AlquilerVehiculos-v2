@@ -50,7 +50,10 @@ public abstract class Modelo {
 	public abstract Alquiler buscar(Alquiler alquiler);
 	public abstract Vehiculo buscar(Vehiculo vehiculo);
 	public abstract void modificar(Cliente cliente, String nombre, String telefono) throws OperationNotSupportedException;
-	public abstract void devolver(Alquiler alquiler, LocalDate fechaDevolucion) throws OperationNotSupportedException;
+	
+	public abstract void devolver(Cliente cliente, LocalDate fechaDevolucion) throws OperationNotSupportedException;
+	public abstract void devolver(Vehiculo vehiculo, LocalDate fechaDevolucion) throws OperationNotSupportedException;
+	
 	public abstract void borrar(Cliente cliente) throws OperationNotSupportedException;
 	public abstract void borrar(Alquiler alquiler) throws OperationNotSupportedException;
 	public abstract void borrar(Vehiculo turismo) throws OperationNotSupportedException;

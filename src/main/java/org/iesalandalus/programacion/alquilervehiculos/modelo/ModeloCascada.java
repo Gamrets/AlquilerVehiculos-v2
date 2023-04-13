@@ -76,13 +76,22 @@ public class ModeloCascada extends Modelo{
 
 	}
 
-	public void devolver(Alquiler alquiler, LocalDate fechaDevolucion) throws OperationNotSupportedException {
+	
+	public void devolver(Cliente cliente, LocalDate fechaDevolucion)
+			throws NullPointerException, OperationNotSupportedException {
 
-		if (alquileres.buscar(alquiler) == null) {
-			throw new OperationNotSupportedException("ERROR: No existe el alquiler a devolver.");
-		}
-		alquileres.devolver(alquiler, fechaDevolucion);
+		alquileres.devolver(cliente, fechaDevolucion);
+
 	}
+
+	public void devolver(Vehiculo vehiculo, LocalDate fechaDevolucion)
+			throws NullPointerException, OperationNotSupportedException {
+
+		alquileres.devolver(vehiculo, fechaDevolucion);
+
+	}
+	
+	
 
 	public void borrar(Cliente cliente) throws OperationNotSupportedException {
 
@@ -174,5 +183,7 @@ public class ModeloCascada extends Modelo{
 		}
 		return listaAlquileres;
 	}
+
+	
 
 }

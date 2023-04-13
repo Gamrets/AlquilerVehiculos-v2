@@ -143,30 +143,59 @@ public class Alquileres implements IAlquileres {
 	/* (non-Javadoc)
 	 * @see org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.IAlquileres#devolver(org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Alquiler, java.time.LocalDate)
 	 */
-	
-	@Override
-	public void devolver(Alquiler alquiler, LocalDate fechaDevolucion) throws OperationNotSupportedException {
 
-		if (alquiler == null || fechaDevolucion == null) {
+	public void devolver(Cliente cliente, LocalDate fechaDevolucion)
+			throws NullPointerException, OperationNotSupportedException {
+		if (cliente == null || fechaDevolucion == null) {
 			throw new NullPointerException("ERROR: No se puede devolver un alquiler nulo.");
 		}
-
-		boolean encontrado = false;
-		Iterator<Alquiler> iterador = coleccionAlquileres.iterator();
-
-		while (iterador.hasNext()) {
-			Alquiler alquilerActual = iterador.next();
-			if (alquilerActual.equals(alquiler)) {
-				alquilerActual.devolver(fechaDevolucion);
-				encontrado = true;
-				break;
-			}
-		}
-
-		if (!encontrado) {
+		Alquiler alquiler = null;
+		alquiler = getAlquilerAbierto(cliente);
+		if (alquiler == null) {
 			throw new OperationNotSupportedException("ERROR: No existe ningún alquiler igual.");
 		}
+		alquiler.devolver(fechaDevolucion);
+	}
 
+	public void devolver(Vehiculo vehiculo, LocalDate fechaDevolucion)
+			throws NullPointerException, OperationNotSupportedException {
+		if (vehiculo == null || fechaDevolucion == null) {
+			throw new NullPointerException("ERROR: No se puede devolver un alquiler nulo.");
+		}
+		Alquiler alquiler = null;
+		alquiler = getAlquilerAbierto(vehiculo);
+		if (alquiler == null) {
+			throw new OperationNotSupportedException("ERROR: No existe ningún alquiler igual.");
+		}
+		alquiler.devolver(fechaDevolucion);
+	}
+
+	private Alquiler getAlquilerAbierto(Cliente cliente) {
+		if (cliente == null) {
+			throw new NullPointerException("ERROR: No se puede buscar un alquiler de cliente nulo.");
+		}
+		Alquiler alquiler = null;
+		for (Alquiler alquilerBusca : coleccionAlquileres) {
+			if (alquilerBusca.getFechaDevolucion() == null && alquilerBusca.getCliente().equals(cliente)) {
+				alquiler = alquilerBusca;
+			}
+
+		}
+		return alquiler;
+	}
+
+	private Alquiler getAlquilerAbierto(Vehiculo vehiculo) {
+		if (vehiculo == null) {
+			throw new NullPointerException("ERROR: No se puede buscar un alquiler de cliente nulo.");
+		}
+		Alquiler alquiler = null;
+		for (Alquiler alquilerBusca : coleccionAlquileres) {
+			if (alquilerBusca.getFechaDevolucion() == null && alquilerBusca.getVehiculo().equals(vehiculo)) {
+				alquiler = alquilerBusca;
+			}
+
+		}
+		return alquiler;
 	}
 
 	/* (non-Javadoc)
