@@ -43,9 +43,15 @@ public enum Accion {
 			vista.modificarCliente();
 		}
 	},
-	DEVOLVER_ALQUILER("Devolver alquiler") {
+	DEVOLVER_ALQUILER_CLIENTE("Devolver alquiler de cliente") {
 		public void ejecutar() {
-			vista.devolverAlquiler();
+			vistaTexto.devolverAlquilerCliente();
+		}
+	},
+
+	DEVOLVER_ALQUILER_VEHICULO("Devolver alquiler de vehiculo") {
+		public void ejecutar() {
+			vistaTexto.devolverAlquilerVehiculo();
 		}
 	},
 	BORRAR_CLIENTE("Borrar cliente") {
@@ -87,7 +93,11 @@ public enum Accion {
 		public void ejecutar() {
 			vista.listarAlquileresTurismo();
 		}
-	};
+	},
+	MOSTRAR_ESTADITICAS_MENSUALES("Mostrar estadisticas mensuales"){
+		public void ejecutar() {
+			vistaTexto.mostrarEstadisticasMensualesTipoVehiculo();
+		}};
 
 	private String cadenaAmostrar;
 	private static VistaTexto vista;
