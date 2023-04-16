@@ -1,0 +1,27 @@
+<?xml version = "1.0" encoding = "UTF-8" standalone="no"?>
+<Vehiculos>
+	<Vehiculo Matricula="1234BCD" Tipo= "Turismo">
+		<Marca TipoDato="String">Mercedes</Marca>
+		<Modelo TipoDato="String">Benz</Modelo>
+		<Turismo>
+			<Cilindrada TipoDato="Integer">1600</Cilindrada>
+		</Turismo>
+	</Vehiculo>
+
+	<Vehiculo Matricula="2334BCD" Tipo= "Autobus">
+		<Marca TipoDato="String">Miko</Marca>
+		<Modelo TipoDato="String">Mi</Modelo>
+		<Autobus>
+			<Plazas TipoDato="Integer">25</Plazas>
+		</Autobus>
+	</Vehiculo>
+
+		<Vehiculo Matricula="5434BCD" Tipo= "Furgoneta">
+		<Marca TipoDato="String">Miyiki</Marca>
+		<Modelo TipoDato="String">Makoto</Modelo>
+		<Furgoneta>
+			<Plazas TipoDato="Integer">25</Plazas>
+			<Pma TipoDato="Integer">5</Pma>
+		</Furgoneta>
+	</Vehiculo>
+</Vehiculos>
