@@ -238,4 +238,16 @@ public class Alquileres implements IAlquileres {
 		}
 	}
 
+	@Override
+	public void terminar() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void comenzar() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

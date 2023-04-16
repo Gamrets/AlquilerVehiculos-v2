@@ -31,4 +31,8 @@ public interface IAlquileres {
 
 	Alquiler buscar(Alquiler alquiler);
 
+	
+	void terminar();
+
+	void comenzar();
 }

@@ -5,13 +5,40 @@ import java.util.List;
 
 import javax.naming.OperationNotSupportedException;
 
+import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Autobus;
+import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Furgoneta;
+import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Turismo;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Vehiculo;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.IVehiculos;
+import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.ficheros.utilidades.UtilidadesXml;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 
 public class Vehiculos implements IVehiculos {
 
-
-	private List<Vehiculo> coleccionVehiculos = new ArrayList<>();
+	private static final String RUTA_FICHERO = "datos/vehiculos.xml";
+	private static final String RAIZ = "Vehiculos"; 
+	private static final String VEHICULO = "Vehiculo"; 
+	private static final String MARCA = "Marca"; 
+	private static final String MODELO = "Modelo"; 
+	private static final String MATRICULA = "Matricula"; 
+	private static final String CILINDRADA ="Cilindrada"; 
+	private static final String PLAZAS = "Plazas"; 
+	private static final String PMA = "Pma"; 
+	private static final String TIPO = "Tipo"; 
+	private static final String TURISMO = "Turismo"; 
+	private static final String AUTOBUS = "Autobus"; 
+	private static final String FURGONETA = "Furgoneta"; 
+	private static final String TIPO_DATO = "TipoDato"; 
+	
+	
+	
+	
+	
+	private List<Vehiculo> coleccionVehiculos;
 	
 	//instancia
 	private static Vehiculos instancia = new Vehiculos();
@@ -29,11 +56,80 @@ public class Vehiculos implements IVehiculos {
 	
 	
 	
+	public void comenzar() {
+		try {
+			coleccionVehiculos = new ArrayList<>();
+			leerXml();
+		} catch (Exception e) {
+			System.out.println("Error" + e);
+		}
+	}
 	
 	
 	
+	private void leerXml() {
+
+		Document DOM = UtilidadesXml.xmlToDom(RUTA_FICHERO);
+		Element listaVehiculos = DOM.getDocumentElement();
+
+		NodeList listaNodos = listaVehiculos.getChildNodes();
+
+		for (int i = 0; i < listaNodos.getLength(); i++) {
+			Node nodo = listaNodos.item(i);
+
+			
+			if (nodo.getNodeType() == Node.ELEMENT_NODE) {
+				Vehiculo vehiculo = elementToVehiculo((Element) nodo);
+				try {
+					insertar(vehiculo);
+				} catch (OperationNotSupportedException e) {
+				}
+			}
+		}
+	}
+
+	private Vehiculo elementToVehiculo(Element elemento) {
+
+		Vehiculo vehiculo = null;
+		Element vehiculoDOM = elemento;
+		String matriculaAtributo = vehiculoDOM.getAttribute(MATRICULA);
+		String tipoVehiculo = vehiculoDOM.getAttribute(TIPO);
+
+		Element marca = (Element) vehiculoDOM.getElementsByTagName(MARCA).item(0);
+		Element modelo = (Element) vehiculoDOM.getElementsByTagName(MODELO).item(0);
+
+		if (tipoVehiculo.equalsIgnoreCase(TURISMO)) {
+
+			Element turismoDOM = (Element) vehiculoDOM.getElementsByTagName(TURISMO).item(0);
+			Element cilindrada = (Element) turismoDOM.getElementsByTagName(CILINDRADA).item(0);
+			vehiculo = new Turismo(marca.getTextContent(), modelo.getTextContent(),
+					Integer.parseInt(cilindrada.getTextContent()), matriculaAtributo);
+		}
+
+		if (tipoVehiculo.equalsIgnoreCase(FURGONETA)) {
+			Element furgonetaDOM = (Element) vehiculoDOM.getElementsByTagName(FURGONETA).item(0);
+
+			Element pma = (Element) furgonetaDOM.getElementsByTagName(PMA).item(0);
+			Element plazas = (Element) furgonetaDOM.getElementsByTagName(PLAZAS).item(0);
+			vehiculo = new Furgoneta(marca.getTextContent(), modelo.getTextContent(),
+					Integer.parseInt(pma.getTextContent()), Integer.parseInt(plazas.getTextContent()), matriculaAtributo);
+		}
+
+		if (tipoVehiculo.equalsIgnoreCase(AUTOBUS)) {
+			Element autobusDOM = (Element) vehiculoDOM.getElementsByTagName(AUTOBUS).item(0);
+			Element plazas = (Element) autobusDOM.getElementsByTagName(PLAZAS).item(0);
+			vehiculo = new Autobus(marca.getTextContent(), modelo.getTextContent(),
+					Integer.parseInt(plazas.getTextContent()), matriculaAtributo);
+		}
+
+		return vehiculo;
+	}
 	
-	
+	@Override
+	public void terminar() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 
@@ -118,4 +214,5 @@ public class Vehiculos implements IVehiculos {
 		}
 
 	}
+
 }

@@ -19,5 +19,9 @@ public interface IClientes {
 	void borrar(Cliente cliente) throws OperationNotSupportedException;
 
 	void modificar(Cliente cliente, String nombre, String telefono) throws OperationNotSupportedException;
+	
+	void terminar();
+
+	void comenzar();
 
 }

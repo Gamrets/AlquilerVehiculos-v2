@@ -19,6 +19,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 
 public class UtilidadesXml {
+	
+	private UtilidadesXml() {}
 
 	
     public static Document xmlToDom (String rutaXml) {
@@ -29,7 +31,10 @@ public class UtilidadesXml {
             // 2º A partir de la instancia anterior, fabricamos un constructor de documentos, que procesará el XML.
             DocumentBuilder db = dbf.newDocumentBuilder();
             // 3º Procesamos el documento (almacenado en un archivo) y lo convertimos en un árbol DOM.
-            doc=db.parse(rutaXml);            
+            File xmlFile = new File(rutaXml);
+            if(xmlFile.exists()) {
+                doc = db.parse(xmlFile);
+            }            
            
         } catch (Exception ex) {
             System.out.println(ex.getMessage());

@@ -1,5 +1,6 @@
 package org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.ficheros;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,10 +8,29 @@ import javax.naming.OperationNotSupportedException;
 
 import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Cliente;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.IClientes;
+import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.ficheros.utilidades.UtilidadesXml;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class Clientes implements IClientes {
+	
+	
+	private final String RUTA_FICHERO ="datos/clientes.xml";
+	private final String RAIZ = "Clientes";
+	private final String CLIENTE = "Cliente";
+	private final String NOMBRE ="Nombre";
+	private final String DNI = "Dni";
+	private final String TELEFONO = "Telefono";
+	private final String TIPO_DATO = "TipoDato";
+	
+	
 
-	private List<Cliente> coleccionClientes = new ArrayList<>();
+	
+
+	private List<Cliente> coleccionClientes;
 	
 	//instancia
 	private static Clientes instancia = new Clientes();
@@ -24,14 +44,109 @@ public class Clientes implements IClientes {
 
 			return instancia;
 		}
-	
-	
-	
-	
-	
-	
-	
-	
+		
+		
+		
+		public void comenzar() {
+			try {
+				coleccionClientes = new ArrayList<>();
+				leerXml();
+			} catch (Exception e) {
+				System.out.println("Error" + e);
+			}
+		}
+
+		private void leerXml() {
+
+			File archivo = new File(RUTA_FICHERO);
+			if (!archivo.exists()) {
+			    System.out.println("ERROR: No se encontró el archivo " + RUTA_FICHERO);
+			    return;
+			}
+			if (!archivo.isFile()) {
+			    System.out.println("ERROR: " + RUTA_FICHERO + " no es un archivo.");
+			    return;
+			}
+			if (!archivo.canRead()) {
+			    System.out.println("ERROR: No se puede leer el archivo " + RUTA_FICHERO);
+			    return;
+			}
+			
+			
+			Document DOM = UtilidadesXml.xmlToDom(RUTA_FICHERO);
+			Element listaClientes = DOM.getDocumentElement();
+
+			NodeList listaNodos = listaClientes.getChildNodes();
+			for (int i = 0; i < listaNodos.getLength(); i++) {
+				Node nodo = listaNodos.item(i);
+				if (nodo.getNodeType() == Node.ELEMENT_NODE) {
+					Cliente cliente = elementToCliente((Element) nodo);
+					try {
+						insertar(cliente);
+					} catch (OperationNotSupportedException e) {
+						
+						System.out.println("Surgio siguiente error:" + e);
+					}
+				}
+			}
+		}
+
+		private Cliente elementToCliente(Element elemento) {
+
+			Element clienteDOM = elemento;
+			String dniAtributo = clienteDOM.getAttribute(DNI);
+			Element nombre = (Element) clienteDOM.getElementsByTagName(NOMBRE).item(0);
+			Element telefono = (Element) clienteDOM.getElementsByTagName(TELEFONO).item(0);
+			Cliente cliente = new Cliente(nombre.getTextContent(), dniAtributo, telefono.getTextContent());
+			return cliente;
+		}
+		
+		
+		public void terminar() {
+			try {
+				escribirXml();
+			} catch (Exception e) {
+				System.out.println("Error" + e);
+			}
+		}
+
+		private void escribirXml() {
+
+			Document DOM = UtilidadesXml.crearDomVacio(RAIZ);
+			Element listaClientes = DOM.getDocumentElement();
+
+			for (Cliente cliente : coleccionClientes) {
+
+				try {
+					Element clienteDOM = clienteToElement(DOM, cliente);
+					listaClientes.appendChild(clienteDOM);
+				} catch (DOMException e) {
+
+					System.out.println("Error" + e);
+				}
+
+				UtilidadesXml.domToXml(DOM, RUTA_FICHERO);
+			}
+		}
+
+		private Element clienteToElement(Document DOM, Cliente cliente) {
+
+			Element clienteDOM = DOM.createElement(CLIENTE);
+			clienteDOM.setAttribute(DNI, cliente.getDni());
+
+			Element nombreE = DOM.createElement(NOMBRE);
+			nombreE.setTextContent(cliente.getNombre());
+			nombreE.setAttribute(TIPO_DATO, "String");
+			clienteDOM.appendChild(nombreE);
+
+			Element telefonoE = DOM.createElement(TELEFONO);
+			telefonoE.setTextContent(cliente.getTelefono());
+			telefonoE.setAttribute(TIPO_DATO, "String");
+			clienteDOM.appendChild(telefonoE);
+
+			return clienteDOM;
+
+		}
 	
 	
 

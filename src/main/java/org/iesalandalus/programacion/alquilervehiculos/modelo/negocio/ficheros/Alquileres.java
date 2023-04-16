@@ -1,6 +1,7 @@
 package org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.ficheros;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,10 +12,34 @@ import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Alquiler;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Cliente;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Vehiculo;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.IAlquileres;
+import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.ficheros.utilidades.UtilidadesXml;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 
 public class Alquileres implements IAlquileres {
+	
+	
+	private final String RUTA_FICHERO ="datos/alquileres.xml";
+	private final String FORMATO_FECHA = "dd/MM/yyyy";
+	private final String RAIZ = "Alquileres";
+	private final String ALQUILER = "Alquiler";
+	private final String DNI_CLIENTE = "Dni";
+	private final String MATRICULA_VEHICULO = "Matricula";
+	private final String FECHA_ALQUILER = "FechaAlquiler";
+	private final String FECHA_DEVOLUCION = "FechaDevolucion";
+	private final String FORMATO = "Formato";
+	private final String TIPO_DATO = "TipoDato";
+	
+	
+	
+	
+	
 
-	private List<Alquiler> coleccionAlquileres  = new ArrayList<>();
+	private List<Alquiler> coleccionAlquileres;
 	
 	//instancia
 	private static Alquileres instancia = new Alquileres();
@@ -32,10 +57,75 @@ public class Alquileres implements IAlquileres {
 	
 	
 	
-	
-	
-	
-	
+	public void comenzar() {
+		try {
+			
+			coleccionAlquileres  = new ArrayList<>();
+			leerXml();
+		} catch (Exception e) {
+			System.out.println("Error " + e);
+		}
+	}
+
+	private void leerXml() {
+
+		Document DOM = UtilidadesXml.xmlToDom(RUTA_FICHERO);
+		Element listaAlquileres = DOM.getDocumentElement();
+
+		NodeList listaNodos = listaAlquileres.getChildNodes();
+
+		for (int i = 0; i < listaNodos.getLength(); i++) {
+			Node nodo = listaNodos.item(i);
+
+			if (nodo.getNodeType() == Node.ELEMENT_NODE) {
+				Alquiler alquiler = elementToAlquiler((Element) nodo);
+				try {
+					insertar(alquiler);
+				} catch (OperationNotSupportedException e) {
+				}
+			}
+		}
+	}
+
+	private Alquiler elementToAlquiler(Element element) {
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FORMATO_FECHA);
+
+		Cliente cliente = null;
+		Vehiculo vehiculo = null;
+
+		Element alquilerDOM = element;
+		String matriculaAtributo = alquilerDOM.getAttribute(MATRICULA_VEHICULO);
+		String dniAtributo = alquilerDOM.getAttribute(DNI_CLIENTE);
+
+		Element fechaAlquiler = (Element) alquilerDOM.getElementsByTagName(FECHA_ALQUILER).item(0);
+		Element fechaDevolucion = (Element) alquilerDOM.getElementsByTagName(FECHA_DEVOLUCION).item(0);
+
+		List<Cliente> listaClientes = Clientes.getInstancia().get();
+		for (Cliente clienteS : listaClientes) {
+			if (clienteS.getDni().equalsIgnoreCase(dniAtributo)) {
+				cliente = clienteS;
+			}
+		}
+
+		List<Vehiculo> listaVehiculos = Vehiculos.getInstancia().get();
+
+		for (Vehiculo vehiculoS : listaVehiculos) {
+			if (vehiculoS.getMatricula().equalsIgnoreCase(matriculaAtributo)) {
+				vehiculo = vehiculoS;
+			}
+		}
+		Alquiler alquiler = new Alquiler(cliente, vehiculo, LocalDate.parse(fechaAlquiler.getTextContent(), formatter));
+
+		if (fechaDevolucion.getTextContent() != null && fechaDevolucion.getTextContent() != "") {
+			try {
+				alquiler.devolver(LocalDate.parse(fechaDevolucion.getTextContent(), formatter));
+			} catch (OperationNotSupportedException | DOMException e) {
+				e.printStackTrace();
+			}
+		}
+		return alquiler;
+	}
 	
 	
 
@@ -255,6 +345,12 @@ public class Alquileres implements IAlquileres {
 		} else {
 			return coleccionAlquileres.get(coleccionAlquileres.indexOf(alquiler));
 		}
+	}
+
+	@Override
+	public void terminar() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

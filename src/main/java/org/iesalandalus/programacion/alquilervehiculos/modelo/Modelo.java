@@ -45,11 +45,16 @@ public abstract class Modelo {
 
 	public void comenzar() {
 		alquileres = fuenteDatos.crearAlquileres();
+		alquileres.comenzar();
 		clientes = fuenteDatos.crearClientes();
+		clientes.comenzar();
 		vehiculos = fuenteDatos.crearVehiculos() ;
+		vehiculos.comenzar();
 	}
 
 	public void terminar() {
+		
+		clientes.terminar();
 		System.out.println("El modelo finalizado");
 	}
 
