@@ -11,6 +11,7 @@ import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Turismo;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Vehiculo;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.IVehiculos;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.ficheros.utilidades.UtilidadesXml;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -127,15 +128,78 @@ public class Vehiculos implements IVehiculos {
 	
 	@Override
 	public void terminar() {
-		// TODO Auto-generated method stub
+		try {
+			escribirXml();
+		} catch (Exception e) {
+		}
 		
 	}
 	
+	private void escribirXml() {
+
+		Document DOM = UtilidadesXml.crearDomVacio(RAIZ);
+		Element listaVehiculos = DOM.getDocumentElement();
+
+		for (Vehiculo v : coleccionVehiculos) {
+
+			try {
+				Element vehiculoDOM = vehiculoToElement(DOM, v);
+				listaVehiculos.appendChild(vehiculoDOM);
+			} catch (DOMException e) {// TODO Auto-generated catch blocke.printStackTrace();}
+			}
+
+			UtilidadesXml.domToXml(DOM, RUTA_FICHERO);
+		}
+	}
 	
 	
-	
-	
-	
+	private Element vehiculoToElement(Document DOM,Vehiculo vehiculo) {
+		
+		String tipoVehiculo = null;
+		if(vehiculo instanceof Turismo) {tipoVehiculo=TURISMO;}
+		if(vehiculo instanceof Autobus) {tipoVehiculo=AUTOBUS;}
+		if(vehiculo instanceof Furgoneta) {tipoVehiculo=FURGONETA;}
+		
+		
+		Element vehiculoDOM = DOM.createElement(VEHICULO);
+		vehiculoDOM.setAttribute(MATRICULA, vehiculo.getMatricula());
+		vehiculoDOM.setAttribute(TIPO, tipoVehiculo);
+		
+		
+		Element marcaElemento = DOM.createElement(MARCA);
+		marcaElemento.setTextContent(vehiculo.getMarca());
+		marcaElemento.setAttribute(TIPO_DATO, "String");
+		vehiculoDOM.appendChild(marcaElemento);
+		
+		Element modeloElemento = DOM.createElement(MODELO);
+		modeloElemento.setTextContent(vehiculo.getModelo());
+		modeloElemento.setAttribute(TIPO_DATO, "String");
+		vehiculoDOM.appendChild(modeloElemento);
+		
+		if(vehiculo instanceof Turismo) {
+			Element turismoElemento = DOM.createElement(TURISMO);
+			vehiculoDOM.appendChild(turismoElemento);
+			
+			Element cilindradaE = DOM.createElement(CILINDRADA);
+			cilindradaE.setTextContent( Integer. toString(((Turismo) vehiculo).getCilindrada()));
+			cilindradaE.setAttribute(TIPO_DATO, "Integer");
+			turismoElemento.appendChild(cilindradaE);
+					
+		}
+		
+		if(vehiculo instanceof Autobus) {
+			Element autobusE = DOM.createElement(AUTOBUS);
+			vehiculoDOM.appendChild(autobusE);
+			
+			Element plazasE = DOM.createElement(PLAZAS);
+			plazasE.setTextContent( Integer. toString(((Autobus) vehiculo).getPlazas()));
+			plazasE.setAttribute(TIPO_DATO, "Integer");
+			autobusE.appendChild(plazasE);
+		
+		}
+		
+		return vehiculoDOM;
+	}
 	
 	
 

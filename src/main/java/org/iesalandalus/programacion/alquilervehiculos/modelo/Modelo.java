@@ -55,6 +55,7 @@ public abstract class Modelo {
 	public void terminar() {
 		
 		clientes.terminar();
+		vehiculos.terminar();
 		
 		
 		System.out.println("El modelo finalizado");
