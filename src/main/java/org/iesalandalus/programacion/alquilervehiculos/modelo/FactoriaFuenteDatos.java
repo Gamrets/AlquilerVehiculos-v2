@@ -9,7 +9,12 @@ public enum FactoriaFuenteDatos {
 		public IFuenteDatos crear() {
 			return new FuenteDatosMemoria();
 		}
-	};
+	},
+	FICHEROS{
+		public IFuenteDatos crear() {
+			return new FuenteDatosFicheros();
+		}
+};
 
 	public abstract IFuenteDatos crear();
 
