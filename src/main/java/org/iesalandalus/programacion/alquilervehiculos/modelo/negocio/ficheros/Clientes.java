@@ -124,9 +124,10 @@ public class Clientes implements IClientes {
 
 					System.out.println("Error" + e);
 				}
-
-				UtilidadesXml.domToXml(DOM, RUTA_FICHERO);
+			
 			}
+			
+			UtilidadesXml.domToXml(DOM, RUTA_FICHERO);
 		}
 
 		private Element clienteToElement(Document DOM, Cliente cliente) {

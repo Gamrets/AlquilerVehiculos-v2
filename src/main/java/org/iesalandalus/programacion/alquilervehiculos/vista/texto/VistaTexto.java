@@ -43,7 +43,9 @@ public class VistaTexto  extends Vista{
 	
 
 	public void terminar() {
-		System.out.println("Hasta luego,nos vemos pronto.");
+		//System.out.println("Hasta luego,nos vemos pronto.");
+		controlador.terminar();
+		
 	}
 
 	protected void insertarCliente() {

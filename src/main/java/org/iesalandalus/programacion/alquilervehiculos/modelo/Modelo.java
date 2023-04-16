@@ -55,6 +55,8 @@ public abstract class Modelo {
 	public void terminar() {
 		
 		clientes.terminar();
+		
+		
 		System.out.println("El modelo finalizado");
 	}
 

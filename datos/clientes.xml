@@ -1,7 +1,11 @@
-<?xml version = "1.0" encoding = "UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Clientes>
-	<Cliente Dni="83830358G">
-		<Nombre TipoDato="String">Juan</Nombre>
-		<Telefono TipoDato="String">633658895</Telefono>
-	</Cliente>
+    <Cliente Dni="20656067C">
+        <Nombre TipoDato="String">Abel</Nombre>
+        <Telefono TipoDato="String">633365566</Telefono>
+    </Cliente>
+    <Cliente Dni="23902971Z">
+        <Nombre TipoDato="String">Francisco </Nombre>
+        <Telefono TipoDato="String">655452214</Telefono>
+    </Cliente>
 </Clientes>
