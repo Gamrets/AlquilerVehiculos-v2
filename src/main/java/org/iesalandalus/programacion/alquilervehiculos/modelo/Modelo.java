@@ -32,6 +32,16 @@ public abstract class Modelo {
 		 
 		 this.fuenteDatos= fuenteDatos;
 	 }
+	 
+	 
+	
+	 public Modelo(FactoriaFuenteDatos factoriaFuenteDatos) {
+			setFuenteDatos(factoriaFuenteDatos.crear());
+		
+		}
+	 
+	 
+	 
 
 	public void comenzar() {
 		alquileres = fuenteDatos.crearAlquileres();

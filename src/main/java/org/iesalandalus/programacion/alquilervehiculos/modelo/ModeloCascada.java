@@ -19,10 +19,9 @@ import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.memoria.Ve
 public class ModeloCascada extends Modelo{
 
 	
-	public ModeloCascada(IFuenteDatos fuenteDatos) {
+	public ModeloCascada(FactoriaFuenteDatos FactoriaFuenteDatos) {
 		
-		super();
-		setFuenteDatos(fuenteDatos);
+		super(FactoriaFuenteDatos);
 		comenzar();
 	}
 	
